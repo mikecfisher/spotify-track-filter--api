@@ -1,3 +1,0 @@
---compilers js:babel-core/register
---require tests/helpers/setup.js
---timeout 5000

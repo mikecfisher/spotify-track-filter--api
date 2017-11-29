@@ -1,4 +1,3 @@
-import path from 'path'
 // import { argv } from 'yargs'
 
 const config = {
@@ -10,7 +9,6 @@ const config = {
   src: 'src',
   public: 'public',
   test: 'tests',
-  favicon: path.resolve(__dirname, '../public/images/favicon.ico'),
 
   /**
    * server configuration

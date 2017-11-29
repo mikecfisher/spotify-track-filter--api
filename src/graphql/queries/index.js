@@ -6,7 +6,6 @@ import {
 } from 'graphql'
 
 import { bookType } from '../types'
-import { Book } from '../../models'
 
 export default new GraphQLObjectType({
   name: 'Query',
@@ -20,13 +19,13 @@ export default new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, { uuid }) => Book.find(uuid)
+      resolve: (root, { uuid }) => 'book'
     },
 
     books: {
       description: 'a collection of nodes of type book',
       type: new GraphQLList(bookType),
-      resolve: (root, args) => Book.all(['Book'])
+      resolve: (root, args) => 'books'
     }
   })
 })
