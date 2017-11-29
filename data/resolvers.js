@@ -1,4 +1,5 @@
-const fetch = require('node-fetch')
+import fetch from 'node-fetch'
+import clientCredentials from './client-credentials'
 
 function errorMsg (error) {
   if (error) {
@@ -21,19 +22,17 @@ const headers = {
   'Authorization': ''
 }
 
-const client_credentials = require('./client_credentials')
-
 let awaitingAuthorization
 
 // const spotifyProxy = async ()  => {
 const spotifyProxy = () => {
-  if (awaitingAuthorization && !client_credentials.isExpired()) {
+  if (awaitingAuthorization && !clientCredentials.isExpired()) {
         // use existing promise, if not expired
     return awaitingAuthorization
   }
-  if (!awaitingAuthorization || client_credentials.isExpired()) {
+  if (!awaitingAuthorization || clientCredentials.isExpired()) {
     awaitingAuthorization = new Promise((resolve, reject) => {
-      client_credentials.authenticate()
+      clientCredentials.authenticate()
                 .then((token) => {
                   headers.Authorization = 'Bearer ' + token.access_token
                   resolve(headers)

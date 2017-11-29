@@ -3,8 +3,11 @@ import graphqlHTTP from 'express-graphql'
 import logger from 'morgan'
 import bodyParser from 'body-parser'
 import _debug from 'debug'
+import cors from 'cors'
 
-import schema from './graphql/schema'
+import schema from '../data/schema'
+import { fetchArtistsByName } from '../data/resolvers'
+
 // import loaders from './graphql/loaders'
 
 /**
@@ -26,22 +29,23 @@ debug('finished configuring server middleware')
  * Authenticated Routs / Middleware
  */
 
+const rootValue = {
+  queryArtists: ({ byName }) => fetchArtistsByName(byName)
+}
+
 /**
 * GraphQL routes
 */
-app.use('/graphql', graphqlHTTP(request => ({
-  schema,
+app.use('/graphql', cors({origin: '*'}), graphqlHTTP(request => ({
+  schema: schema,
   graphiql: process.env.NODE_ENV !== 'production',
-  rootValue: {
-    queryArtists: ({ byName }) => {
-      return fetchArtistsByName(byName)
-    }
+  rootValue: rootValue
   //   domain: request.hostname,
   //   locale: request.cookies.locale || 'en',
   //   user: request.user,
   //   loaders: loaders()
-  }
-})))
+}
+)))
 
 app.use('/', (req, res) => {
   res.json({ message: 'welcome to tenshi api!' })

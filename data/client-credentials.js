@@ -2,14 +2,10 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
-const fetch = require('node-fetch')
+import fetch from 'node-fetch'
 
-require('dotenv').config()
-
-const {
-    CLIENT_ID = 'invalid',
-    CLIENT_SECRET = 'invalid'
-} = process.env
+const CLIENT_ID = '64e4e218c812401eb64307b7358a12e0'
+const CLIENT_SECRET = 'eaae6892d9ce4f869eb521ac8844b6a1'
 
 const authOptions = {
   url: 'https://accounts.spotify.com/api/token',
