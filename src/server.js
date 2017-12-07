@@ -6,7 +6,7 @@ import _debug from 'debug'
 import cors from 'cors'
 
 import schema from '../data/schema'
-import { fetchArtistsByName } from '../data/resolvers'
+import { fetchArtistsByName, fetchTracksOfAlbum } from '../data/resolvers'
 
 // import loaders from './graphql/loaders'
 
@@ -30,7 +30,8 @@ debug('finished configuring server middleware')
  */
 
 const rootValue = {
-  queryArtists: ({ byName }) => fetchArtistsByName(byName)
+  queryArtists: ({ byName }) => fetchArtistsByName(byName),
+  queryTracks: ({byId}) => fetchTracksOfAlbum(byId)
 }
 
 /**
@@ -40,12 +41,7 @@ app.use('/graphql', cors({origin: '*'}), graphqlHTTP(request => ({
   schema: schema,
   graphiql: process.env.NODE_ENV !== 'production',
   rootValue: rootValue
-  //   domain: request.hostname,
-  //   locale: request.cookies.locale || 'en',
-  //   user: request.user,
-  //   loaders: loaders()
-}
-)))
+})))
 
 app.use('/', (req, res) => {
   res.json({ message: 'welcome to tenshi api!' })

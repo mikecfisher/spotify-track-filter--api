@@ -1,14 +1,12 @@
+let {buildSchema} = require('graphql')
 
-let {
-    buildSchema
-} = require('graphql');
-
-const schema = buildSchema(`
+const schemaString = `
 # The root of all queries:
 type Query {
   # Just returns "Hello world!"
   hi(message: String = "Hi"): String
   queryArtists(byName: String = "Red Hot Chili Peppers"): [Artist]
+  queryTracks(byId: String = "1234"): [Track]
 }
 type Artist {
   name: String!
@@ -28,6 +26,7 @@ type Track {
   preview_url: String
   id: ID
 }
-`);
+`
+const schema = buildSchema(schemaString)
 
-module.exports = schema;
+module.exports = schema

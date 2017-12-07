@@ -64,6 +64,7 @@ module.exports.fetchArtistsByName = async(name) => {
 
 const fetchAlbumsOfArtist = async(artistId, limit) => {
   console.log(`debug: query albums of artist ${artistId} `)
+  console.log('limit passed in', limit)
 
   const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}/albums`, {
     headers: await haveHeadersWithAuthToken()
@@ -72,6 +73,7 @@ const fetchAlbumsOfArtist = async(artistId, limit) => {
   throwExceptionOnError(data)
 
   return (data.items || [])
+        .slice(0, limit)
         .map(albumRaw => spotifyJsonToAlbum(albumRaw))
 }
 
@@ -108,6 +110,35 @@ const spotifyJsonToAlbum = (albumRaw) => {
         // else: just takes URL of the first image
     image: albumRaw.images[0] ? albumRaw.images[0].url : '',
 
-    tracks: [] // TODO implement fetching of tracks of album
+    tracks: () => {
+      // const albumId = albumRaw.id
+      // return fetchTracksOfAlbum(albumId)
+    }
+  }
+}
+
+export const fetchTracksOfAlbum = async(albumId, limit) => {
+  console.log(`debug: query tracks of album ${albumId} `)
+
+  const response = await fetch(`https://api.spotify.com/v1/albums/${albumId}/tracks`, {
+    headers: await haveHeadersWithAuthToken()
+  })
+  const data = await response.json()
+  throwExceptionOnError(data)
+
+  return (data.items || [])
+        .slice(0, limit)
+        .map(tracksRaw => spotifyJsonToTracks(tracksRaw))
+}
+
+const spotifyJsonToTracks = (tracksRaw) => {
+  return {
+        // fills with raw data (by ES6 spread operator):
+    ...tracksRaw
+
+        // This needs extra logic: defaults to an empty string, if there is no image
+        // else: just takes URL of the first image
+    // image: tracksRaw.images[0] ? tracksRaw.images[0].url : '',
+
   }
 }
