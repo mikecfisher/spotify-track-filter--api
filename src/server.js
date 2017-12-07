@@ -8,14 +8,11 @@ import cors from 'cors'
 import schema from '../data/schema'
 import { fetchArtistsByName, fetchTracksOfAlbum } from '../data/resolvers'
 
-// import loaders from './graphql/loaders'
-
 /**
  * Base App Configuration
  */
 const app = express()
 const debug = _debug('api:server')
-// const Book = new Book()
 
 debug('configuring server middleware')
 
@@ -24,10 +21,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 debug('finished configuring server middleware')
-
-/**
- * Authenticated Routs / Middleware
- */
 
 const rootValue = {
   queryArtists: ({ byName }) => fetchArtistsByName(byName),

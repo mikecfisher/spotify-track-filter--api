@@ -1,7 +1,3 @@
-/**
- * For more information, read
- * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
- */
 import fetch from 'node-fetch'
 
 const CLIENT_ID = '64e4e218c812401eb64307b7358a12e0'
@@ -38,14 +34,14 @@ module.exports = {
       body: 'grant_type=client_credentials'
     }
     return fetch(authOptions.url, options)
-            .then((response) => {
-              return response.json()
-            })
-            .then(token => {
-              const time = Date.now()
-              const expires_in = Number.parseInt(token.expires_in, 10)
-              expireTime = time + expires_in * 1000
-              return token
-            })
+      .then((response) => {
+        return response.json()
+      })
+      .then(token => {
+        const time = Date.now()
+        const expires_in = Number.parseInt(token.expires_in, 10)
+        expireTime = time + expires_in * 1000
+        return token
+      })
   }
 }
